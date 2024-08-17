@@ -59,12 +59,16 @@ This README provides instructions on how to set up a DOMjudge environment for Co
    ```
    ![docker compose up -d](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/0.png?token=GHSAT0AAAAAACPIBIUCNEKFSK6K7DFH3RL2ZWAUIMQ)
 4. ### Check initial domserver password
+
    run in your terminal (use sudo if your docker running for root user)
+
    ```sh
    docker compose exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret
    ```
+
    ![inital password](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/s3.png?token=GHSAT0AAAAAACPIBIUCQQORNMUWCDERGLS4ZWAUK5Q)
    use the initial password for login as `admin` username in http://localhost/login
+   ![admin login](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/6.png?token=GHSAT0AAAAAACPIBIUCLXIZNSQC3LH2HPJIZWAUXWA)
 
 5. ### Change Judgedaemon password on virtual environment `.env`
    ![.env](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/2.png?token=GHSAT0AAAAAACPIBIUCWWZ74CQLMAAZA6SSZWAUL3A)
@@ -72,16 +76,21 @@ This README provides instructions on how to set up a DOMjudge environment for Co
    Visit http://localhost/jury/judgehosts on browser
    ![judgehost](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/1.png?token=GHSAT0AAAAAACPIBIUCZZQSNW5MQCSKIH4CZWAUPCQ)
 7. ### Restart Judgehost service
+
    If you just see 1 judgehost ("example-judgehost1") maybe you need to restart your service.
    In your terminal run (use sudo if your docker running for root user)
+
    ```sh
    docker compose down
    docker compose up -d
    ```
+
    access http://localhost/jury/judgehost, if still inactive run this command
+
    ```sh
    docker compose restart judgehost
    ```
+
    in still inactive try troubleshooting
 
 8. ### Check judgehost status
@@ -96,7 +105,7 @@ This README provides instructions on how to set up a DOMjudge environment for Co
     USERNAME="demo"
     PASSWORD="demo"
     ```
-
+    ![participants user](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/7.png?token=GHSAT0AAAAAACPIBIUCYEDPWLRE6GP7RZH4ZWAUW3Q)
 11. #### Stop Services
 
     ```
