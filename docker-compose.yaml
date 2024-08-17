@@ -1,0 +1,62 @@
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  domserver:
+    image: domjudge/domserver:${DOMJUDGE_VERSION}
+    environment:
+      CONTAINER_TIMEZONE: "Asia/Jakarta"
+      MYSQL_HOST: db
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      DJ_DB_INSTALL_BARE: 0
+      FPM_MAX_CHILDREN: 40
+      TRUSTED_PROXIES: ""
+      WEBAPP_BASEURL: "/"
+     
+    depends_on:
+      - db
+    ports:
+      - 80:80
+    volumes:
+      - domserver_data:/opt/domjudge/domserver/etc
+
+  judgehost:
+    image: domjudge/judgehost:${DOMJUDGE_VERSION}
+    privileged: true
+    environment:
+      CONTAINER_TIMEZONE: "Asia/Jakarta"
+      DOMSERVER_BASEURL: "http://domserver/"
+      JUDGEDAEMON_USERNAME: ${JUDGEDAEMON_USERNAME}
+      JUDGEDAEMON_PASSWORD: ${JUDGEDAEMON_PASSWORD}
+      DAEMON_ID: 0
+      DOMJUDGE_CREATE_WRITABLE_TEMP_DIR: 0
+      RUN_USER_UID_GID: 62860
+    depends_on:
+      - domserver
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+      - judgehost_data:/opt/domjudge/judgehost
+
+volumes:
+  mariadb_data:
+  domserver_data:
+  judgehost_data:
