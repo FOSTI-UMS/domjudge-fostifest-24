@@ -4,7 +4,25 @@ This README provides instructions on how to set up a DOMjudge environment for Co
 
 ## Prerequisites
 
-- Docker and Docker Compose installed on your machine.
+- [Docker]()
+  ```sh
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh ./get-docker.sh --dry-run
+  ```
+- [Docker Compose for current user](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually)
+  ```sh
+  DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+  mkdir -p $DOCKER_CONFIG/cli-plugins
+  curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+  chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+  docker compose version
+  ```
+- [Docker Compose for all user](https://docs.docker.com/compose/install/linux/#install-the-plugin-manually)
+  ```bash
+  sudo mkdir -p /usr/local/lib/docker/cli-plugins
+  sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+  sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+  ```
 - A `.env` file configured with the following variables (copy and configure from `.env.example` file):
 
   ```env
@@ -16,6 +34,7 @@ This README provides instructions on how to set up a DOMjudge environment for Co
   JUDGEDAEMON_USERNAME="admin"
   JUDGEDAEMON_PASSWORD="some_random_password"
   ```
+
 ## Services Overview
 
 - db: MariaDB database service.
@@ -38,22 +57,48 @@ This README provides instructions on how to set up a DOMjudge environment for Co
    ```
    docker compose up -d
    ```
-4. #### Access DOMjudge and Adminer
-
-   - DOMjudge Web Interface: Open your browser and go to http://localhost.
-   - Adminer: Open your browser and go to http://localhost:8080.
-
-5. #### Stop Services
-
+4. ### Check initial domserver password
+   run in your terminal (use sudo if your docker running for root user)
+   ```sh
+   docker compose exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret
    ```
+   use the initial password for login as `admin` username in http://localhost/login
+5. ### Change password on virtual environment `.env`
+6. ### Check judgehost status
+   - Visit http://localhost/jury/judgehosts on browser
+7. ### Restart Judgehost service
+   If you just see 1 judgehost ("example-judgehost1") maybe you need to restart your service.
+   In your terminal run (use sudo if your docker running for root user)
+   ```sh
    docker compose down
    ```
-
-   delete with volume
-
+   access http://localhost/jury/judgehost, if still inactive run this command
+   ```sh
+   docker compose restart judgehost
    ```
-   docker compose down -v
-   ```
+8. ### Check judgehost status
+
+   - Visit http://localhost/jury/judgehosts on browser
+
+9. ### Manage database
+   Use Adminer by open your browser and go to http://localhost:8080 and login with `MARIADB_USER` and `MARIADB_PASSWORD` on `.env` file
+10. ### login as demo user
+    from http://localhost/login you can use this credentials to login
+    ```
+    USERNAME="demo"
+    PASSWORD="demo"
+    ```
+11. #### Stop Services
+
+    ```
+    docker compose down
+    ```
+
+    delete with volume
+
+    ```
+    docker compose down -v
+    ```
 
 # Configuration Details
 
@@ -80,4 +125,5 @@ This README provides instructions on how to set up a DOMjudge environment for Co
 ```sh
 docker compose logs <service-name>
 ```
+
 change <service-name> with service db, domjudge, judgehost, or adminer.

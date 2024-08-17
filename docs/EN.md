@@ -38,6 +38,7 @@ README ini memberikan instruksi tentang cara mengatur lingkungan DOMjudge menggu
    ```
    docker compose up -d
    ```
+   
 4. #### Akses DOMjudge dan Adminer
     - Antarmuka Web DOMjudge: Buka browser Anda dan pergi ke http://localhost.
     - localhost:8080.
