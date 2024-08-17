@@ -57,37 +57,46 @@ This README provides instructions on how to set up a DOMjudge environment for Co
    ```
    docker compose up -d
    ```
+   ![docker compose up -d](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/0.png?token=GHSAT0AAAAAACPIBIUCNEKFSK6K7DFH3RL2ZWAUIMQ)
 4. ### Check initial domserver password
    run in your terminal (use sudo if your docker running for root user)
    ```sh
    docker compose exec domserver cat /opt/domjudge/domserver/etc/initial_admin_password.secret
    ```
+   ![inital password](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/s3.png?token=GHSAT0AAAAAACPIBIUCQQORNMUWCDERGLS4ZWAUK5Q)
    use the initial password for login as `admin` username in http://localhost/login
-5. ### Change password on virtual environment `.env`
+
+5. ### Change Judgedaemon password on virtual environment `.env`
+   ![.env](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/2.png?token=GHSAT0AAAAAACPIBIUCWWZ74CQLMAAZA6SSZWAUL3A)
 6. ### Check judgehost status
-   - Visit http://localhost/jury/judgehosts on browser
+   Visit http://localhost/jury/judgehosts on browser
+   ![judgehost](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/1.png?token=GHSAT0AAAAAACPIBIUCZZQSNW5MQCSKIH4CZWAUPCQ)
 7. ### Restart Judgehost service
    If you just see 1 judgehost ("example-judgehost1") maybe you need to restart your service.
    In your terminal run (use sudo if your docker running for root user)
    ```sh
    docker compose down
+   docker compose up -d
    ```
    access http://localhost/jury/judgehost, if still inactive run this command
    ```sh
    docker compose restart judgehost
    ```
+   in still inactive try troubleshooting
+
 8. ### Check judgehost status
-
-   - Visit http://localhost/jury/judgehosts on browser
-
+   Visit http://localhost/jury/judgehosts on browser
+   ![](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/4.png?token=GHSAT0AAAAAACPIBIUDB7TOWUNWZVY3WS2OZWAUREQ)
 9. ### Manage database
-   Use Adminer by open your browser and go to http://localhost:8080 and login with `MARIADB_USER` and `MARIADB_PASSWORD` on `.env` file
+   Use Adminer by open your browser and go to http://localhost:8080. Login with `MARIADB_USER` and `MARIADB_PASSWORD` on `.env` file
+   ![adminer](https://raw.githubusercontent.com/FOSTI-UMS/domjudge-fostifest-24/main/docs/images/5.png?token=GHSAT0AAAAAACPIBIUCM27XDHNLQBJACRF6ZWAUSQA)
 10. ### login as demo user
     from http://localhost/login you can use this credentials to login
     ```
     USERNAME="demo"
     PASSWORD="demo"
     ```
+
 11. #### Stop Services
 
     ```
